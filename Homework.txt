@@ -1,0 +1,10 @@
+1) Создать домен на Авторе OneToMany Uni
+    Category
+    String title
+    Price from(BigDecimal)
+    Price to
+
+    Adding ad -> Search author's emails -> send email with template
+
+2)  Add isEnabled field(boolean) to Ad, for deleting inactive ads
+2a) Add logic for enabling/disabling ads
