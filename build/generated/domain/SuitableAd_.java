@@ -14,7 +14,7 @@ public abstract class SuitableAd_ {
 	public static volatile SingularAttribute<SuitableAd, Integer> id;
 	public static volatile SingularAttribute<SuitableAd, String> text;
 	public static volatile SingularAttribute<SuitableAd, BigDecimal> priceTo;
-	public static volatile SingularAttribute<SuitableAd, Category> category;
+	public static volatile SingularAttribute<SuitableAd, String> category;
 
 	public static final String PRICE_FROM = "priceFrom";
 	public static final String AUTHOR = "author";

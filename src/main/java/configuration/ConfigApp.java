@@ -20,11 +20,16 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+/**
+ * Class ConfigAppTest set up all the configurations, makes connection with database, manages transactions and defines
+ * strategy for sending emails
+ * @author Polina Shcherbinina
+ * @version 1.1
+ */
 @Configuration
 @ComponentScan(basePackages = {"controller", "service"})
 @EnableWebMvc
@@ -33,6 +38,15 @@ import java.util.Properties;
 @EnableJpaRepositories(basePackages = "repository")
 @EnableScheduling
 public class ConfigApp implements WebMvcConfigurer {
+
+    /**
+     * Method binds a JPA EntityManager from the specified factory to the thread, potentially allowing for one
+     * thread-bound EntityManager per factory. This transaction manager is appropriate for applications that use a single
+     * JPA EntityManagerFactory for transactional data access. It helps to open and close transactions
+     * @param emfb EntityManagerFactory provides an efficient way to construct multiple EntityManager instances for a
+     * database.
+     * @return JPATransactionalManager that is responsible for transactional data access
+     */
     @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory emfb) {
         JpaTransactionManager manager = new JpaTransactionManager();
@@ -41,6 +55,11 @@ public class ConfigApp implements WebMvcConfigurer {
         return manager;
     }
 
+
+    /**
+     * Method sets up a location where data that is being used originates from
+     * @return DataSource is the location where data that is being used originates from.
+     */
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource source = new DriverManagerDataSource();
@@ -52,7 +71,14 @@ public class ConfigApp implements WebMvcConfigurer {
         return source;
     }
 
+
     @Bean
+    /**
+     * Method allows to plug in vendor-specific behavior into Spring's EntityManagerFactory creators. Serves as single
+     * configuration point for all vendor-specific properties
+     * @return JPAVendorAdapter that allows to plug in vendor-specific behavior into Spring's EntityManagerFactory
+     * creators
+     */
     public JpaVendorAdapter jpaVendorAdapter() {
         HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
         adapter.setDatabase(Database.MYSQL);
@@ -62,6 +88,14 @@ public class ConfigApp implements WebMvcConfigurer {
         return adapter;
     }
 
+
+    /**
+     * Method  produces a container-managed EntityManagerFactory
+     * @param adapter JPAVendorAdapter
+     * @param dataSource DataSource
+     * @return LocalContainerEntityManagerFactoryBean that supports links to an existing JDBC DataSource, supports both
+     * local and global transactions
+     */
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(JpaVendorAdapter adapter,
                                                                            DataSource dataSource) {
@@ -72,16 +106,33 @@ public class ConfigApp implements WebMvcConfigurer {
         return emfb;
     }
 
+
+    /**
+     * Method gets PersistenceAnnotationBeanPostProcessor that processes PersistenceUnit and PersistenceContext
+     * annotations, for injection of the corresponding JPA resources EntityManagerFactory and EntityManager
+     * @return PersistenceAnnotationBeanPostProcessor
+     */
     @Bean
     public PersistenceAnnotationBeanPostProcessor processor() {
         return new PersistenceAnnotationBeanPostProcessor();
     }
 
+
+    /**
+     * Method allows default servlet to serve the resource
+     * @param configurer DefaultServletHandlerConfigurer is used to serve static resources
+     */
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
     }
 
+
+    /**
+     * Method defines a strategy for sending simple mails
+     * @return JavaMailSender that used in conjunction with the MimeMessageHelper class for convenient creation of
+     * JavaMail MimeMessages, including attachments
+     */
     @Bean
     public JavaMailSender mailSender() {
         JavaMailSenderImpl sender = new JavaMailSenderImpl();
