@@ -21,7 +21,7 @@ public class Phone {
      */
     @Column(name = "phone_id")
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     /**
@@ -36,52 +36,29 @@ public class Phone {
     private Author author;
 
 
-    /**
-     * Phone constructor. Creates phone object with parameter number
-     * @param number phone number
-     */
     public Phone(String number) {
         this.number = number;
     }
 
 
-    /**
-     * Default phone constructor. Creates phone object without parameters
-     */
     Phone(){ }
 
 
-    /**
-     * Method gets phone id
-     * @return phone id
-     */
     public int getId() {
         return id;
     }
 
 
-    /**
-     * Method sets phone id
-     * @param id phone id
-     */
     public void setId(int id) {
         this.id = id;
     }
 
 
-    /**
-     * Method get phone number
-     * @return phone number
-     */
     public String getNumber() {
         return number;
     }
 
 
-    /**
-     * Method sets phone number
-     * @param number phone number
-     */
     public void setNumber(String number) {
         this.number = number;
     }

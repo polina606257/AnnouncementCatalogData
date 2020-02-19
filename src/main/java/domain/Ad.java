@@ -10,13 +10,12 @@ import serializator.AdSerializator;
 import serializator.LocalDateSerializator;
 import javax.persistence.*;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
- * Class Ad with parameters id, name, date, text, price, active, {@link Author}, {@link Category} defines advertisement
+ * Class Ad with parameters id, name, localDate, text, price, active, {@link Author}, {@link Category} defines advertisement
  * @author Polina Shcherbinina
  * @version 1.1
  */
@@ -30,7 +29,7 @@ public class Ad {
      */
     @Column(name = "ad_id")
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
 
@@ -42,12 +41,12 @@ public class Ad {
 
 
     /**
-     * Field date is date when advertisement is creating
+     * Field localDate is localDate when advertisement is creating
      */
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
-    @JsonDeserialize(using = LocalDateDeserializator.class)
-    @JsonSerialize(using = LocalDateSerializator.class)
-    private LocalDate date;
+/*    @JsonDeserialize(using = LocalDateDeserializator.class)
+    @JsonSerialize(using = LocalDateSerializator.class)*/
+    private LocalDate localDate;
 
 
     /**
@@ -76,7 +75,7 @@ public class Ad {
     @ManyToOne
     @JoinColumn(name = "author_fk_id")
     @Valid
-    @NotNull
+//    @NotNull
     private Author author;
 
 
@@ -86,23 +85,14 @@ public class Ad {
     @ManyToOne
     @JoinColumn(name = "category_fk_id")
     @Valid
-    @NotNull
+//    @NotNull
     private Category category;
 
 
-    /**
-     * Ad constructor. Creates Ad object with parameters
-     * @param name ad name
-     * @param date ad date
-     * @param text ad text
-     * @param price ad price
-     * @param active active or inactive
-     * @param author ad author
-     * @param category ad category
-     */
-    public Ad(String name, LocalDate date, String text, BigDecimal price, boolean active, Author author, Category category) {
+    public Ad(String name, LocalDate localDate, String text, BigDecimal price,
+              boolean active, Author author, Category category) {
         this.name = name;
-        this.date = date;
+        this.localDate = localDate;
         this.text = text;
         this.price = price;
         this.active = active;
@@ -110,154 +100,108 @@ public class Ad {
         this.category = category;
     }
 
-
-    /**
-     * Default constructor. Creates Ad object without any parameters
-     */
     public Ad() {
+
     }
 
-
-    /**
-     * Method gets ad id
-     * @return ad id
-     */
     public int getId() {
         return id;
     }
 
 
-    /**
-     * Method sets ad id
-     * @param id ad id
-     */
     public void setId(int id) {
         this.id = id;
     }
 
 
-    /**
-     * Method gets ad name
-     * @return ad name
-     */
     public String getName() {
         return name;
     }
 
 
-    /**
-     * Method sets ad name
-     * @param name ad name
-     */
     public void setName(String name) {
         this.name = name;
     }
 
 
-    /**
-     * Method gets ad date
-     * @return ad date
-     */
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getLocalDate() {
+        return localDate;
     }
 
 
-    /**
-     * Method sets ad date
-     * @param date ad date
-     */
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setLocalDate(LocalDate localDate) {
+        this.localDate = localDate;
     }
 
 
-    /**
-     * Method gets ad text
-     * @return ad text
-     */
     public String getText() {
         return text;
     }
 
 
-    /**
-     * Method set ad text
-     * @param text ad text
-     */
     public void setText(String text) {
         this.text = text;
     }
 
 
-    /**
-     * Method gets ad price
-     * @return price of product
-     */
     public BigDecimal getPrice() {
         return price;
     }
 
 
-    /** Method sets ad price
-     * @param price ad price
-     */
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
 
-    /**
-     * Method gets ad author
-     * @return ad author
-     */
     public Author getAuthor() {
         return author;
     }
 
 
-    /**
-     * Method sets ad author
-     * @param author ad author
-     */
     public void setAuthor(Author author) {
         this.author = author;
     }
 
 
-    /**
-     * Method gets ad category
-     * @return ad category
-     */
     public Category getCategory() {
         return category;
     }
 
 
-    /**
-     * Method sets ad category
-     * @param category ad category
-     */
     public void setCategory(Category category) {
         this.category = category;
     }
 
 
-    /**
-     * Method gets if ad is active or inActive
-     * @return ad isActive or inActive
-     */
     public boolean isActive() {
         return active;
     }
 
 
-    /**
-     * Method sets if ad is active or inActive
-     * @param active shows that ad is active
-     */
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Ad)) return false;
+
+        Ad ad = (Ad) o;
+
+        return ad.name.equals(name) && ad.text.equals(text) && ad.price.compareTo(price) == 0 && ad.localDate.equals(localDate) &&
+                ad.author.getId() == author.getId() && ad.category.getId() == category.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + text.hashCode();
+        result = 31 * result + price.hashCode();
+        result = 31 * result + author.hashCode();
+        result = 31 * result + category.hashCode();
+        return result;
     }
 }
 

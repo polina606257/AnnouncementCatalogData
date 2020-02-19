@@ -23,7 +23,7 @@ public class AuthorController {
      */
     @Autowired
     @Qualifier("authorServiceImpl")
-    private AuthorService<Author> service;
+    private AuthorService service;
 
 
     /**

@@ -15,7 +15,7 @@ import java.util.List;
  * @version 1.1
  */
 @Service
-public class AuthorServiceImpl implements AuthorService<Author> {
+public class AuthorServiceImpl implements AuthorService {
 
     /**
      * Field authorRepository is an object of {@link AuthorRepository}, it has all CRUD methods for Author

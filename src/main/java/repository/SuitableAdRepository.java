@@ -23,4 +23,12 @@ public interface SuitableAdRepository extends JpaRepository<SuitableAd, Integer>
     @Query("DELETE FROM SuitableAd sad WHERE sad.id = :id")
     @Modifying
     void deleteById(@Param("id") int id);
+
+
+    /**
+     * Method gets SuitableAd by id. Method is used just for tests
+     * @param id suitableAd id
+     * @return suitableAd by id
+     */
+    SuitableAd findById(int id);
 }

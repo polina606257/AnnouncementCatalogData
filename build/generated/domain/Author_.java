@@ -12,7 +12,7 @@ public abstract class Author_ {
 	public static volatile ListAttribute<Author, Ad> ads;
 	public static volatile SingularAttribute<Author, Address> address;
 	public static volatile SingularAttribute<Author, Phone> phone;
-	public static volatile ListAttribute<Author, Ad> suitableAds;
+	public static volatile ListAttribute<Author, SuitableAd> suitableAds;
 	public static volatile SingularAttribute<Author, String> name;
 	public static volatile SingularAttribute<Author, Integer> id;
 	public static volatile SingularAttribute<Author, Email> email;

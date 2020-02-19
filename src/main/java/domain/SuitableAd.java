@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * Class SuitableAd defines specific ad with certain parameters that authors would want to be informed when new ad with
@@ -23,7 +24,7 @@ public class SuitableAd {
      */
     @Column(name = "suitable_ad_id")
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     /**
@@ -56,132 +57,95 @@ public class SuitableAd {
     private Author author;
 
 
-    /**
-     * SuitableAd constructor. Created SuitableAd object with parameters
-     * @param text suitableAd text
-     * @param priceFrom priceFrom
-     * @param priceTo priceTo
-     * @param category name of category
-     */
-    public SuitableAd(String text, BigDecimal priceFrom, BigDecimal priceTo, String category) {
+    public SuitableAd(String text, BigDecimal priceFrom, BigDecimal priceTo, String category, Author author) {
         this.text = text;
-        this.priceFrom = priceFrom;
-        this.priceTo = priceTo;
+        this.priceFrom = priceFrom.setScale(2, RoundingMode.HALF_UP);
+        this.priceTo = priceTo.setScale(2, RoundingMode.HALF_UP);
         this.category = category;
+        this.author = author;
     }
 
 
-    /**
-     * Default constructor. Creates SuitableAd without parameters
-     */
     public SuitableAd() {
     }
 
 
-    /**
-     * Method gets suitable ad id
-     * @return suitable ad id
-     */
     public int getId() {
         return id;
     }
 
 
-    /**
-     * Method sets suitable ad id
-     * @param id suitable ad id
-     */
     public void setId(int id) {
         this.id = id;
     }
 
 
-    /**
-     * Method gets suitable ad text
-     * @return suitable ad text
-     */
     public String getText() {
         return text;
     }
 
 
-    /**
-     * Method sets suitable ad text
-     * @param text suitable ad text
-     */
     public void setText(String text) {
         this.text = text;
     }
 
 
-    /**
-     * Method gets priceFrom
-     * @return priceFrom
-     */
     public BigDecimal getPriceFrom() {
         return priceFrom;
     }
 
 
-    /**
-     * Method sets priceFrom
-     * @param priceFrom priceFRom
-     */
     public void setPriceFrom(BigDecimal priceFrom) {
         this.priceFrom = priceFrom;
     }
 
 
-    /**
-     * Method gets priceTo
-     * @return priceTo
-     */
     public BigDecimal getPriceTo() {
         return priceTo;
     }
 
 
-    /**
-     * Method sets priceTo
-     * @param priceTo priceTo
-     */
     public void setPriceTo(BigDecimal priceTo) {
         this.priceTo = priceTo;
     }
 
 
-    /**
-     * Method gets suitable ad author
-     * @return suitable ad author
-     */
     public Author getAuthor() {
         return author;
     }
 
 
-    /**
-     * Method sets suitable ad author
-     * @param author suitable ad author
-     */
     public void setAuthor(Author author) {
         this.author = author;
     }
 
 
-    /**
-     * Method gets category name
-     * @return category name
-     */
     public String getCategory() {
         return category;
     }
 
 
-    /**
-     * Method sets category name
-     * @param category category name
-     */
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SuitableAd)) return false;
+
+        SuitableAd suitableAd = (SuitableAd) o;
+
+        return suitableAd.getText().equals(text) && suitableAd.getPriceFrom().equals(priceFrom) &&
+                suitableAd.getPriceTo().equals(priceTo) && suitableAd.getCategory().equals(category);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = text.hashCode();
+        result = 31 * result + priceFrom.hashCode();
+        result = 31 * result + priceTo.hashCode();
+        result = 31 * result + category.hashCode();
+        return result;
     }
 }

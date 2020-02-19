@@ -7,11 +7,10 @@ import java.util.List;
 /**
  * AdService interface binds realization part with user, contains methods extended from {@link CrudService} for Ad
  * type and additional methods for ad
- * @param <M> common type of data that can be used for specific type latter
  * @author Polina Shcherbinina
  * @version 1.1
  */
-public interface AdService<M> extends CrudService<Ad> {
+public interface AdService extends CrudService<Ad> {
 
     /**
      * Method gets ad by category id

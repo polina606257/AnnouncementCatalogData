@@ -21,7 +21,7 @@ public class AdController {
      * Service is object instance of {@link AdService} interface. It connects realization part with user application
      */
     @Autowired
-    private AdService<Ad> service;
+    private AdService service;
 
 
     /**

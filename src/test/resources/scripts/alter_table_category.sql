@@ -1,0 +1,1 @@
+ALTER TABLE Category  AUTO_INCREMENT = 1;

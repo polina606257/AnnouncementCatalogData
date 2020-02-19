@@ -38,7 +38,7 @@ public class EmailServiceImpl implements EmailService {
      * @return list of emails with suitable ad where we will send advertisement
      */
     private List<String> findBySuitableAd(Ad ad) {
-        return emailRepository.findBySuitableAd(ad.getName(), ad.getPrice(), ad.getCategory().getCategory());
+        return emailRepository.findBySuitableAd(ad.getName(), ad.getPrice(), ad.getCategory().getName());
     }
 
 

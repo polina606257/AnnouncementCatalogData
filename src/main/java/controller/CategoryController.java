@@ -20,9 +20,12 @@ public class CategoryController {
      * Service is object instance of {@link CrudService} interface with Category type. It connects realization part with
      * user application
      */
+    private final CrudService<Category> service;
+
     @Autowired
-    @Qualifier("categoryServiceImpl")
-    private CrudService<Category> service;
+    public CategoryController(@Qualifier("categoryServiceImpl") CrudService<Category> service) {
+        this.service = service;
+    }
 
 
     /**

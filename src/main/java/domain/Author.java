@@ -6,8 +6,10 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Class Author with parameters id, name, {@link Phone}, {@link Address}, {@link Email}, ads {@link Ad}, suitableAds
@@ -24,7 +26,7 @@ public class  Author {
      */
     @Column(name = "author_id")
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
 
@@ -78,7 +80,7 @@ public class  Author {
      */
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "author",
             orphanRemoval = true)
-    private List<Ad> suitableAds = new LinkedList<>();
+    private List<SuitableAd> suitableAds = new LinkedList<>();
 
     /**
      * Method adding ad to appropriate author
@@ -89,12 +91,6 @@ public class  Author {
     }
 
 
-    /** Author constructor . Creates Author object with certain parameters
-     * @param name author name
-     * @param phone author phone {@link Phone}
-     * @param address author address {@link Address}
-     * @param email author email {@link Email}
-     */
     public Author(String name, Phone phone, Address address, Email email) {
         this.name = name;
         this.phone = phone;
@@ -103,135 +99,106 @@ public class  Author {
     }
 
 
-    /**
-     * Default author constructor. Creates Author without parameters
-     */
-    Author() {}
+    public Author(int id, String name, Phone phone, Address address, Email email) {
+        this.id = id;
+        this.name = name;
+        this.phone = phone;
+        this.address = address;
+        this.email = email;
+    }
 
 
-    /**
-     * Method gets author id
-     * @return author id
-     */
+    public Author() {}
+
+
     public int getId() {
         return id;
     }
 
 
-    /**
-     * Method sets author id
-     * @param id author id
-     */
     public void setId(int id) {
         this.id = id;
     }
 
 
-    /**
-     * Method gets author name
-     * @return author name
-     */
     public String getName() {
         return name;
     }
 
 
-    /**
-     * Method sets author name
-     * @param name author name
-     */
     public void setName(String name) {
         this.name = name;
     }
 
 
-    /**
-     * Method gets author phone
-     * @return author phone
-     */
     public Phone getPhone() {
         return phone;
     }
 
 
-    /**
-     * Method sets author phone
-     * @param phone author phone
-     */
     public void setPhone(Phone phone) {
         this.phone = phone;
     }
 
 
-    /**
-     * Method gets author address
-     * @return author address
-     */
     public Address getAddress() {
         return address;
     }
 
 
-    /**
-     * Methods sets author address
-     * @param address author address
-     */
     public void setAddress(Address address) {
         this.address = address;
     }
 
 
-    /**
-     * Method gets author email
-     * @return author email
-     */
     public Email getEmail() {
         return email;
     }
 
 
-    /**
-     * Method sets author email
-     * @param email author email
-     */
     public void setEmail(Email email) {
         this.email = email;
     }
 
 
-    /**
-     * Method gets list of advertisements related to author
-     * @return advertisements related to author
-     */
     public List<Ad> getAds() {
         return ads;
     }
 
 
-    /**
-     * Method sets list of ads related to author
-     * @param ads ads related to author
-     */
     public void setAds(List<Ad> ads) {
         this.ads = ads;
     }
 
 
-    /**
-     * Method gets kist of suitable advertisemnts related to author
-     * @return suitable ads related to author
-     */
-    public List<Ad> getSuitableAdsForAuthor() {
+    public List<SuitableAd> getSuitableAdsForAuthor() {
         return suitableAds;
     }
 
 
-    /**
-     * Method sets list of suitable ads related to author
-     * @param suitableAdsForAuthor suitable advertisements related to author
-     */
-    public void setSuitableAdsForAuthor(List<Ad> suitableAdsForAuthor) {
+    public void setSuitableAdsForAuthor(List<SuitableAd> suitableAdsForAuthor) {
         this.suitableAds = suitableAdsForAuthor;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Author)) return false;
+
+        Author author = (Author) o;
+
+        return author.name.equals(name) && author.phone.getNumber().equals(phone.getNumber())
+                && author.address.getCountry().equals(address.getCountry()) &&
+                author.address.getCity().equals(address.getCity()) && author.email.getEmail().equals(email.getEmail());
     }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + phone.hashCode();
+        result = 31 * result + address.hashCode();
+        result = 31 * result + email.hashCode();
+        return result;
+    }
+}
 

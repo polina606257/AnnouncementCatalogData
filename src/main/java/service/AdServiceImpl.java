@@ -17,7 +17,7 @@ import java.util.List;
  * @version 1.1
  */
 @Service
-public class AdServiceImpl implements AdService<Ad> {
+public class AdServiceImpl implements AdService {
 
     /**
      * Repository is an instance object of {@link AdRepository} interface. it has all CRUD methods for advertisement
@@ -168,7 +168,7 @@ public class AdServiceImpl implements AdService<Ad> {
      */
     @Override
     public List<Ad> findAllPagination() {
-        PageRequest pageRequest = PageRequest.of(1, 3);
+        PageRequest pageRequest = PageRequest.of(0, 2);
         Page<Ad> ads = repository.findAll(pageRequest);
         return ads.getContent();
     }
@@ -177,7 +177,7 @@ public class AdServiceImpl implements AdService<Ad> {
      * Method deletes inactive ads every day at 11 pm
      */
     @Override
-    @Scheduled(cron = "0 23 * * * *")
+    @Scheduled(cron = "0 39 17 * * ?")
     public void deleteInactiveAds() {
         repository.deleteInactiveAds();
     }

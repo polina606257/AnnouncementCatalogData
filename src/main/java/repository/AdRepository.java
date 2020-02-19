@@ -48,7 +48,7 @@ public interface AdRepository extends JpaRepository<Ad, Integer> {
      * @param date ad date of creation
      * @return list of advertisements where creation date is input date
      */
-    @Query("SELECT ad FROM Ad ad WHERE ad.date = :date")
+    @Query("SELECT ad FROM Ad ad WHERE ad.localDate = :date")
     List<Ad> findAllByDate(@Param ("date")LocalDate date);
 
 
